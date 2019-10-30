@@ -1,4 +1,4 @@
-import { clearCanvas } from "./canvas";
+import { clearCanvas } from "../canvas";
 
 export function drawTracer({ ctx }) {
 	clearCanvas(this.canvasBundle);

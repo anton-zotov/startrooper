@@ -1,13 +1,9 @@
-import { createCanvas, clearCanvas, requestPointerLock, fillCanvas } from './canvas';
+import { requestPointerLock, fillCanvas } from './canvas';
 import { initInputs } from './inputs';
-import { drawTracer } from './tracer';
-import { updateAgent } from './agent';
-import { getPlayerControls } from './controls';
-import { centeredFire } from './fire';
-import { drawFps } from './gui';
+import { tracerPlayer } from './agents/player';
+import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol } from './constants';
-import { dumbGuard } from './dumbGuard';
-import { dieOnHit } from './onHit';
+import { drawFps } from './gui';
 
 export function start(canvas) {
 	let ctx = canvas.getContext('2d');
@@ -22,22 +18,7 @@ export function start(canvas) {
 		getInputs: initInputs(window, canvas),
 	}
 
-	gameObjects.push(createGameObject({
-		update: updateAgent,
-		draw: drawTracer,
-		getControls: getPlayerControls,
-		fire: centeredFire({ cooldown: 0.2 }),
-		onHit: dieOnHit,
-		x: 100,
-		y: 100,
-		angle: 0,
-		width: 30,
-		height: 100,
-		canvasBundle: createCanvas(100, 100),
-		interactsWithAmmo: true,
-		team: 1,
-		hp: 10,
-	}));
+	gameObjects.push(tracerPlayer());
 	gameObjects.push(dumbGuard());
 
 	requestAnimationFrame(t => frame(game, t));
@@ -59,10 +40,4 @@ function frame(game, time, lastTime = null) {
 
 	drawFps(game.canvasBundle, dt);
 	requestAnimationFrame(t => frame(game, t, time));
-}
-
-function createGameObject(config) {
-	return {
-		...config
-	};
 }

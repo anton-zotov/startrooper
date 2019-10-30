@@ -1,5 +1,5 @@
-import { clearCanvas, createCanvas } from "./canvas";
-import { deadSymbol } from "./constants";
+import { clearCanvas, createCanvas } from "../canvas";
+import { deadSymbol } from "../constants";
 import { dieOnHit } from "./onHit";
 
 export function shortRangeBullet(agent) {
@@ -60,6 +60,5 @@ export function checkHit(ammo, { gameObjects }) {
 export function checkCollision(go1, go2) {
 	let r1 = Math.min(go1.width, go1.height);
 	let r2 = Math.min(go2.width, go2.height);
-	console.log('t1', r1, r2)
 	return ((go1.x - go2.x) ** 2 + (go1.y - go2.y) ** 2) <= (r1 + r2) ** 2;
 }

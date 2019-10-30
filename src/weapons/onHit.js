@@ -1,4 +1,4 @@
-import { deadSymbol } from "./constants";
+import { deadSymbol } from "../constants";
 
 export function dieOnHit() {
 	this[deadSymbol] = true;

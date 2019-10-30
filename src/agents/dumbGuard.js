@@ -1,7 +1,7 @@
-import { clearCanvas, createCanvas } from "./canvas";
-import { deadSymbol } from "./constants";
-import { centeredFire } from "./fire";
-import { reduceHpOnHit } from "./onHit";
+import { clearCanvas, createCanvas } from "../canvas";
+import { deadSymbol } from "../constants";
+import { centeredFire } from "../weapons/fire";
+import { reduceHpOnHit } from "../weapons/onHit";
 
 export function dumbGuard() {
 	return {
