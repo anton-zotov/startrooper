@@ -1,12 +1,14 @@
 import { clearCanvas, createCanvas } from "./canvas";
 import { deadSymbol } from "./constants";
 import { centeredFire } from "./fire";
+import { reduceHpOnHit } from "./onHit";
 
 export function dumbGuard() {
 	return {
 		update: updateDumbGuard,
 		draw: drawDumbGuard,
 		fire: centeredFire({ cooldown: 1 }),
+		onHit: reduceHpOnHit,
 		x: 500,
 		y: 100,
 		angle: 0,
@@ -16,6 +18,9 @@ export function dumbGuard() {
 		stepTime: 3,
 		stepTimeLeft: 3,
 		step: 0,
+		interactsWithAmmo: true,
+		team: 2,
+		hp: 5,
 	};
 }
 

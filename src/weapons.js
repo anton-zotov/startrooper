@@ -1,10 +1,12 @@
 import { clearCanvas, createCanvas } from "./canvas";
 import { deadSymbol } from "./constants";
+import { dieOnHit } from "./onHit";
 
 export function shortRangeBullet(agent) {
 	return {
 		update: updateBullet,
 		draw: drawBullet,
+		onHit: dieOnHit,
 		x: agent.x,
 		y: agent.y,
 		angle: agent.angle,
@@ -12,10 +14,12 @@ export function shortRangeBullet(agent) {
 		height: 6,
 		canvasBundle: createCanvas(20, 20, agent.angle),
 		liveTimeLeft: 1,
+		team: agent.team,
+		damage: 1,
 	};
 }
 
-export function updateBullet(time, dt) {
+export function updateBullet(time, dt, game) {
 	let speed = 500;
 	let dx = dt * speed * Math.cos(this.angle);
 	let dy = dt * speed * Math.sin(this.angle);
@@ -23,6 +27,7 @@ export function updateBullet(time, dt) {
 	this.y += dy;
 	this.liveTimeLeft -= dt;
 	if (this.liveTimeLeft <= 0) this[deadSymbol] = true;
+	checkHit(this, game);
 }
 
 export function drawBullet({ ctx }) {
@@ -38,4 +43,23 @@ export function drawBullet({ ctx }) {
 		this.x - this.canvasBundle.canvas.width / 2, 
 		this.y - this.canvasBundle.canvas.height / 2, 
 	);
+}
+
+export function checkHit(ammo, { gameObjects }) {
+	for (let go of gameObjects) {
+		if (go === ammo) continue;
+		if (!go.interactsWithAmmo) continue;
+		if (ammo.team && ammo.team === go.team) continue;
+		if (checkCollision(ammo, go)) {
+			ammo.onHit(go);
+			go.onHit(ammo);
+		}
+	}
+}
+
+export function checkCollision(go1, go2) {
+	let r1 = Math.min(go1.width, go1.height);
+	let r2 = Math.min(go2.width, go2.height);
+	console.log('t1', r1, r2)
+	return ((go1.x - go2.x) ** 2 + (go1.y - go2.y) ** 2) <= (r1 + r2) ** 2;
 }

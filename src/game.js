@@ -7,6 +7,7 @@ import { centeredFire } from './fire';
 import { drawFps } from './gui';
 import { deadSymbol } from './constants';
 import { dumbGuard } from './dumbGuard';
+import { dieOnHit } from './onHit';
 
 export function start(canvas) {
 	let ctx = canvas.getContext('2d');
@@ -26,12 +27,16 @@ export function start(canvas) {
 		draw: drawTracer,
 		getControls: getPlayerControls,
 		fire: centeredFire({ cooldown: 0.2 }),
+		onHit: dieOnHit,
 		x: 100,
 		y: 100,
 		angle: 0,
 		width: 30,
 		height: 100,
 		canvasBundle: createCanvas(100, 100),
+		interactsWithAmmo: true,
+		team: 1,
+		hp: 10,
 	}));
 	gameObjects.push(dumbGuard());
 
