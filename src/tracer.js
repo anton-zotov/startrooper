@@ -8,5 +8,21 @@ export function drawTracer({ ctx }) {
 		-this.height / 2,
 		this.width,
 		this.height);
-	ctx.drawImage(this.canvasBundle.canvas, this.x - this.width / 2, this.y - this.height);
+	ctx.drawImage(
+		this.canvasBundle.canvas, 
+		this.x - this.canvasBundle.canvas.width / 2, 
+		this.y - this.canvasBundle.canvas.height / 2, 
+	);
+	drawAim.call(this, { ctx });
+}
+
+function drawAim({ ctx }) {
+	let aimDistance = 120;
+	let aimRadius = 10;
+	let aimX = this.x + aimDistance * Math.cos(this.angle);
+	let aimY = this.y + aimDistance * Math.sin(this.angle);
+	ctx.strokeStyle = '#00F000';
+	ctx.beginPath();
+	ctx.arc(aimX, aimY, aimRadius, 0, Math.PI * 2);
+	ctx.stroke();
 }
