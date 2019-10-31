@@ -1,16 +1,15 @@
 export function updateAgent(time, dt, game) {
 	let controls = this.getControls(game.keysPressed, game.mouseMovement);
-	let speed = 300;
-	if (controls.forward && controls.sideways) speed *= Math.SQRT1_2;
-	let dx = controls.forward * dt * speed * Math.cos(this.angle);
-	let dy = controls.forward * dt * speed * Math.sin(this.angle);
-	dx -= controls.sideways * dt * speed * Math.sin(this.angle);
-	dy += controls.sideways * dt * speed * Math.cos(this.angle);
-	this.x += dx;
-	this.y += dy;
+	let acceleration = 10;
+	// if (controls.forward && controls.sideways) speed *= Math.SQRT1_2;
+	let ax = controls.forward * dt * acceleration;
+	let ay = controls.upward * dt * acceleration;
+	this.vx += ax;
+	this.vy += ay;
+	this.x += this.vx;
+	this.y += this.vy;
 	if (controls.dAngle) {
 		this.angle += controls.dAngle;
-		this.canvasBundle.ctx.rotate(controls.dAngle);
 	}
 	if (controls.fire) {
 		this.fire(time, game.gameObjects);

@@ -14,6 +14,8 @@ export function tracerPlayer() {
 		onHit: dieOnHit,
 		x: 100,
 		y: 100,
+		vx: 0,
+		vy: 0,
 		angle: 0,
 		width: 30,
 		height: 100,
@@ -21,5 +23,6 @@ export function tracerPlayer() {
 		interactsWithAmmo: true,
 		team: 1,
 		hp: 10,
+		affectedByGravity: true,
 	};
 }
