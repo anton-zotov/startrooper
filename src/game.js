@@ -1,6 +1,6 @@
 import { requestPointerLock, fillCanvas } from './canvas';
 import { initInputs } from './inputs';
-import { tracerPlayer } from './agents/player';
+import { player } from './agents/player';
 import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol } from './constants';
 import { drawFps } from './gui';
@@ -18,7 +18,7 @@ export function start(canvas) {
 		getInputs: initInputs(window, canvas),
 	}
 
-	gameObjects.push(tracerPlayer());
+	gameObjects.push(player());
 	gameObjects.push(dumbGuard());
 
 	requestAnimationFrame(t => frame(game, t));

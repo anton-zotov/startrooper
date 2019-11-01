@@ -1,4 +1,4 @@
-export function getPlayerControls(keysPressed, mouseMovement) {
+export function getHumanControls(keysPressed, mouseMovement) {
 	let forward = 0;
 	let upward = 0;
 	let fire = false;
