@@ -1,10 +1,11 @@
-import { requestPointerLock, fillCanvas } from './canvas';
+import { requestPointerLock } from './canvas';
 import { initInputs } from './inputs';
 import { player } from './agents/player';
 import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol } from './constants';
 import { drawFps } from './gui';
 import { loadAssets } from './assets';
+import { drawBackground } from './background';
 
 export async function start(canvas) {
 	let ctx = canvas.getContext('2d');
@@ -31,7 +32,7 @@ export async function start(canvas) {
 function frame(game, time, lastTime = null) {
 	let dt = 0;
 	if (lastTime) dt = (time - lastTime) / 1000;
-	fillCanvas(game.canvasBundle);
+	drawBackground(game.canvasBundle);
 	let { keysPressed, mouseMovement } = game.getInputs();
 	game.keysPressed = keysPressed;
 	game.mouseMovement = mouseMovement;

@@ -32,4 +32,5 @@ function drawShield({ ctx }) {
 function updateShield() {
 	this.x = this.host.x + 70;
 	this.y = this.host.y;
+	this.interactsWithAmmo = this.host.shieldActive;
 }
