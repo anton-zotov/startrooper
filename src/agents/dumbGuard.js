@@ -11,7 +11,7 @@ export function dumbGuard() {
 		onHit: reduceHpOnHit,
 		x: 500,
 		y: 100,
-		angle: 0,
+		angle: Math.PI,
 		width: 50,
 		height: 50,
 		canvasBundle: createCanvas(50, 50),
@@ -27,7 +27,7 @@ export function dumbGuard() {
 export function updateDumbGuard(time, dt, game) {
 	let speed = 100;
 	let dy = dt * speed;
-	this.y += dy * (this.step === 0 ? 1 : -1);
+	// this.y += dy * (this.step === 0 ? 1 : -1);
 	this.stepTimeLeft -= dt;
 	if (this.stepTimeLeft <= 0) {
 		this.stepTimeLeft = this.stepTime;

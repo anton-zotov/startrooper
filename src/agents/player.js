@@ -4,9 +4,12 @@ import { dieOnHit } from "../weapons/onHit";
 import { createCanvas } from "../canvas";
 import { gravity } from "../constants";
 import { clearCanvas } from "../canvas";
+import { images } from "../assets";
+import { shield } from "./shield";
+
 
 export function player() {
-	return {
+	let playerObject = {
 		update: updatePlayer,
 		draw: drawPlayer,
 		getControls: getHumanControls,
@@ -17,14 +20,17 @@ export function player() {
 		vx: 0,
 		vy: 0,
 		angle: 0,
-		width: 30,
-		height: 100,
+		width: images.playerShip.width,
+		height: images.playerShip.height,
+		weaponX: 25,
 		canvasBundle: createCanvas(100, 100),
 		interactsWithAmmo: true,
 		team: 1,
 		hp: 10,
-		affectedByGravity: true,
+		shieldActive: false,
 	};
+	let shieldObject = shield(playerObject);
+	return [playerObject, shieldObject];
 }
 
 export function updatePlayer(time, dt, game) {
@@ -52,6 +58,7 @@ export function updatePlayer(time, dt, game) {
 	if (controls.fire) {
 		this.fire(time, game.gameObjects);
 	}
+	this.shieldActive = controls.secondary;
 }
 
 export function drawPlayer({ ctx }) {
@@ -62,10 +69,15 @@ export function drawPlayer({ ctx }) {
 		-this.height / 2,
 		this.width,
 		this.height);
+	// ctx.drawImage(
+	// 	this.canvasBundle.canvas, 
+	// 	this.x - this.canvasBundle.canvas.width / 2, 
+	// 	this.y - this.canvasBundle.canvas.height / 2, 
+	// // );
 	ctx.drawImage(
-		this.canvasBundle.canvas, 
-		this.x - this.canvasBundle.canvas.width / 2, 
-		this.y - this.canvasBundle.canvas.height / 2, 
+		images.playerShip,
+		this.x - images.playerShip.width / 2,
+		this.y - images.playerShip.height / 2,
 	);
 	drawAim.call(this, { ctx });
 }
@@ -73,7 +85,7 @@ export function drawPlayer({ ctx }) {
 function drawAim({ ctx }) {
 	let aimDistance = 120;
 	let aimRadius = 10;
-	let aimX = this.x + aimDistance * Math.cos(this.angle);
+	let aimX = this.x + this.weaponX + aimDistance * Math.cos(this.angle);
 	let aimY = this.y + aimDistance * Math.sin(this.angle);
 	ctx.strokeStyle = '#00F000';
 	ctx.beginPath();

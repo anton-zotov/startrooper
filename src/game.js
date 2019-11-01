@@ -4,10 +4,14 @@ import { player } from './agents/player';
 import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol } from './constants';
 import { drawFps } from './gui';
+import { loadAssets } from './assets';
 
-export function start(canvas) {
+export async function start(canvas) {
 	let ctx = canvas.getContext('2d');
 	let canvasBundle = { canvas, ctx };
+
+	await loadAssets();
+
 	canvas.onclick = function() {
 		requestPointerLock(canvasBundle);
 	}
@@ -18,7 +22,7 @@ export function start(canvas) {
 		getInputs: initInputs(window, canvas),
 	}
 
-	gameObjects.push(player());
+	gameObjects.push(...player());
 	gameObjects.push(dumbGuard());
 
 	requestAnimationFrame(t => frame(game, t));
