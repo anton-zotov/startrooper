@@ -6,6 +6,7 @@ import { deadSymbol } from './constants';
 import { drawFps } from './gui';
 import { loadAssets } from './assets';
 import { drawBackground } from './background';
+import { spawnWave, waveSpawner } from './agents/spawn';
 
 export async function start(canvas) {
 	let ctx = canvas.getContext('2d');
@@ -23,13 +24,16 @@ export async function start(canvas) {
 		getInputs: initInputs(window, canvas),
 	}
 
+	let spawner = waveSpawner(game);
 	gameObjects.push(...player());
-	gameObjects.push(dumbGuard());
+	// gameObjects.push(dumbGuard());
+	spawner.spawnWawyMobs();
 
 	requestAnimationFrame(t => frame(game, t));
 }
 
 function frame(game, time, lastTime = null) {
+	game.currentTime = time;
 	let dt = 0;
 	if (lastTime) dt = (time - lastTime) / 1000;
 	drawBackground(game.canvasBundle);
@@ -41,6 +45,7 @@ function frame(game, time, lastTime = null) {
 		go.draw(game.canvasBundle);
 		go.update(time, dt, game);
 	}
+	console.log('lll', game.gameObjects)
 	game.gameObjects = game.gameObjects.filter(go => !go[deadSymbol]);
 
 	drawFps(game.canvasBundle, dt);
