@@ -1,10 +1,10 @@
 import { wavyMob } from "./wavyMob";
 import { artillery } from "./artillery";
 
-export function spawnWave(game, mob, amount, interval) {
+export function spawnWave(game, mob, amount, interval, mobParams = {}) {
 	const spawn = () => {
 		if (!--amount) clearInterval(intervalId);
-		game.gameObjects.push(mob(game));
+		game.gameObjects.push(mob(game, { ...mobParams, id: amount }));
 	};
 	let intervalId = setInterval(spawn, interval * 1000);
 	spawn();

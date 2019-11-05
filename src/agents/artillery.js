@@ -4,7 +4,8 @@ import { centeredFire } from "../weapons/fire";
 import { reduceHpOnHit } from "../weapons/onHit";
 import { vectorAngle } from "../utils/geometry";
 
-export function artillery(game) {
+export function artillery(game, { id = 0 } = {}) {
+	let position = (id % 2) ? 'bottom' : 'top';
 	let { width: canvasWidth, height: canvasHeight } = game.canvasBundle.canvas;
 	return {
 		update: updateArtillery,
@@ -12,7 +13,7 @@ export function artillery(game) {
 		fire: centeredFire({ cooldown: 1 }),
 		onHit: reduceHpOnHit,
 		x: canvasWidth + 100,
-		y: 20,
+		y: position === 'bottom' ? 20 : canvasHeight - 20,
 		angle: Math.PI,
 		width: 50,
 		height: 50,
@@ -39,11 +40,11 @@ export function updateArtillery(time, dt, game) {
 	this.fire(time, game.gameObjects);
 }
 
-export function angleToPlayer(ammo, { player }) {
-	let vecX = ammo.x - player.x;
-	let vecY = ammo.y - player.y;
+export function angleToPlayer(mob, { player }) {
+	let vecX = mob.x - player.x;
+	let vecY = mob.y - player.y;
 	let angle = vectorAngle(vecX, vecY);
-	console.log('aangle', vecX, vecY, angle);
+	if (vecY > 0) angle = -angle;
 	return angle;
 }
 
