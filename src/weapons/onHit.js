@@ -1,6 +1,7 @@
 import { deadSymbol } from "../constants";
 
 export function dieOnHit() {
+	this.hp = 0;
 	this[deadSymbol] = true;
 }
 

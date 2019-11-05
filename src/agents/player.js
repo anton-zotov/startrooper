@@ -1,6 +1,6 @@
 import { getHumanControls } from "../controls";
 import { centeredFire } from "../weapons/fire";
-import { dieOnHit } from "../weapons/onHit";
+import { dieOnHit, reduceHpOnHit } from "../weapons/onHit";
 import { createCanvas } from "../canvas";
 import { gravity } from "../constants";
 import { clearCanvas } from "../canvas";
@@ -14,7 +14,7 @@ export function player() {
 		draw: drawPlayer,
 		getControls: getHumanControls,
 		fire: centeredFire({ cooldown: 0.2 }),
-		onHit: dieOnHit,
+		onHit: reduceHpOnHit,
 		x: 100,
 		y: 100,
 		vx: 0,
@@ -26,6 +26,7 @@ export function player() {
 		canvasBundle: createCanvas(100, 100),
 		interactsWithAmmo: true,
 		team: 1,
+		maxHp: 10,
 		hp: 10,
 		shieldActive: false,
 	};
@@ -38,19 +39,22 @@ export function updatePlayer(time, dt, game) {
 	let accelerationTop = -30;
 	let accelerationBottom = 20;
 	let yMaxSpeed = 8;
-	let xSpeed = 200;
+	let speed = 400;
+	if (controls.forward && controls.upward) speed *= Math.SQRT1_2;
 
-	let vx = controls.forward * dt * xSpeed;
+	let vx = controls.forward * dt * speed;
 	this.x += vx;
+	
+	let vy = controls.upward * dt * speed;
+	this.y += vy;
 
-	let ay = gravity * dt;
-	if (controls.upward === 1) ay += accelerationBottom * dt;
-	else if (controls.upward === -1) ay += accelerationTop * dt;
-
-	this.vy += ay;
-	if (this.vy > yMaxSpeed) this.vy = yMaxSpeed;
-	if (this.vy < -yMaxSpeed) this.vy = -yMaxSpeed;
-	this.y += this.vy;
+	// let ay = gravity * dt;
+	// if (controls.upward === 1) ay += accelerationBottom * dt;
+	// else if (controls.upward === -1) ay += accelerationTop * dt;
+	// this.vy += ay;
+	// if (this.vy > yMaxSpeed) this.vy = yMaxSpeed;
+	// if (this.vy < -yMaxSpeed) this.vy = -yMaxSpeed;
+	// this.y += this.vy;
 
 	if (controls.dAngle) {
 		this.angle += controls.dAngle;

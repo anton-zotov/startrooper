@@ -21,6 +21,7 @@ export function dumbGuard() {
 		interactsWithAmmo: true,
 		team: 2,
 		hp: 5,
+		type: gameObjectType.agent,
 	};
 }
 

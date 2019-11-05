@@ -1,0 +1,1 @@
+export const vectorAngle = (x, y) => Math.acos(-x / Math.sqrt(x ** 2 + y ** 2));

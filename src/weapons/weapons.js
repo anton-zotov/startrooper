@@ -1,5 +1,5 @@
 import { clearCanvas, createCanvas } from "../canvas";
-import { deadSymbol } from "../constants";
+import { deadSymbol, gameObjectType } from "../constants";
 import { dieOnHit } from "./onHit";
 
 export function shortRangeBullet(agent) {
@@ -13,9 +13,10 @@ export function shortRangeBullet(agent) {
 		width: 20,
 		height: 6,
 		canvasBundle: createCanvas(20, 20, agent.angle),
-		liveTimeLeft: 1,
+		liveTimeLeft: 3,
 		team: agent.team,
 		damage: 1,
+		type: gameObjectType.bullet,
 	};
 }
 

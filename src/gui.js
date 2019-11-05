@@ -11,3 +11,15 @@ export function drawFps({ ctx }, dt) {
 	ctx.font = "20px Open Sans";
 	ctx.fillText(`FPS: ${fps}`, 10, 20);
 }
+
+export function drawHealth({ ctx, canvas }, player) {
+	ctx.fillStyle = "red";
+	ctx.font = "20px Open Sans";
+	let percent = Math.round(player.hp / player.maxHp * 100);
+	ctx.fillText(`Health: ${percent}%`, 10, canvas.height - 100);
+}
+
+export function drawGUI(canvasBundle, { dt, player, wave }) {
+	drawFps(canvasBundle, dt);
+	drawHealth(canvasBundle, player);
+}
