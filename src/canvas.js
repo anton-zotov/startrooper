@@ -21,3 +21,10 @@ export function requestPointerLock({ canvas }) {
 	canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
 	canvas.requestPointerLock();
 }
+
+export function drawRotated({ canvas, ctx }, image, x, y, angle, cx = 0.5, cy = 0.5) {
+	ctx.setTransform(1, 0, 0, 1, x, y);
+	ctx.rotate(angle);
+	ctx.drawImage(image, -image.width * cx, -image.height * cy);
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+}

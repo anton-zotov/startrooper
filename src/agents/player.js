@@ -66,13 +66,13 @@ export function updatePlayer(time, dt, game) {
 }
 
 export function drawPlayer({ ctx }) {
-	clearCanvas(this.canvasBundle);
-	this.canvasBundle.ctx.fillStyle = "#" + Math.round((1 - 0) * 255).toString(16).padEnd('0', 2) + 'F000';
-	this.canvasBundle.ctx.fillRect(
-		-this.width / 2,
-		-this.height / 2,
-		this.width,
-		this.height);
+	// clearCanvas(this.canvasBundle);
+	// this.canvasBundle.ctx.fillStyle = "#" + Math.round((1 - 0) * 255).toString(16).padEnd('0', 2) + 'F000';
+	// this.canvasBundle.ctx.fillRect(
+	// 	-this.width / 2,
+	// 	-this.height / 2,
+	// 	this.width,
+	// 	this.height);
 	// ctx.drawImage(
 	// 	this.canvasBundle.canvas, 
 	// 	this.x - this.canvasBundle.canvas.width / 2, 

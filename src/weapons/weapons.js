@@ -41,8 +41,8 @@ export function drawBullet({ ctx }) {
 		this.height);
 	ctx.drawImage(
 		this.canvasBundle.canvas, 
-		this.x - this.canvasBundle.canvas.width / 2, 
-		this.y - this.canvasBundle.canvas.height / 2, 
+		this.x - 15, 
+		this.y - 15, 
 	);
 }
 

@@ -1,8 +1,9 @@
-import { clearCanvas, createCanvas } from "../canvas";
+import { clearCanvas, createCanvas, drawRotated } from "../canvas";
 import { deadSymbol, gameObjectType } from "../constants";
 import { centeredFire } from "../weapons/fire";
 import { reduceHpOnHit } from "../weapons/onHit";
 import { vectorAngle } from "../utils/geometry";
+import { images } from "../assets";
 
 export function artillery(game, { id = 0 } = {}) {
 	let position = (id % 2) ? 'bottom' : 'top';
@@ -14,9 +15,10 @@ export function artillery(game, { id = 0 } = {}) {
 		onHit: reduceHpOnHit,
 		x: canvasWidth + 100,
 		y: position === 'bottom' ? 20 : canvasHeight - 20,
+		position,
 		angle: Math.PI,
-		width: 50,
-		height: 50,
+		width: 23,
+		height: 39,
 		canvasBundle: createCanvas(50, 50),
 		stepTime: 3,
 		stepTimeLeft: 3,
@@ -32,11 +34,14 @@ export function artillery(game, { id = 0 } = {}) {
 }
 
 export function updateArtillery(time, dt, game) {
+	const gunLength = 10;
 	let xSpeed = -150;
 	let dx = dt * xSpeed;
 	this.x += dx;
 	if (this.x < -100) this[deadSymbol] = true;
 	this.angle = angleToPlayer(this, game);
+	this.weaponX = gunLength * Math.cos(this.angle);
+	this.weaponY = gunLength * Math.sin(this.angle);
 	this.fire(time, game.gameObjects);
 }
 
@@ -48,17 +53,21 @@ export function angleToPlayer(mob, { player }) {
 	return angle;
 }
 
-export function drawArtillery({ ctx }) {
-	clearCanvas(this.canvasBundle);
-	this.canvasBundle.ctx.fillStyle = '#F000F0';
-	this.canvasBundle.ctx.fillRect(
-		-this.width / 2,
-		-this.height / 2,
-		this.width,
-		this.height);
-	ctx.drawImage(
-		this.canvasBundle.canvas,
-		this.x - this.canvasBundle.canvas.width / 2,
-		this.y - this.canvasBundle.canvas.height / 2,
+export function drawArtillery(canvasBundle) {
+	drawRotated(
+		canvasBundle,
+		images.artilleryBody,
+		this.x,
+		this.y,
+		this.position === 'top' ? Math.PI / 2 : - Math.PI / 2
+	);
+	drawRotated(
+		canvasBundle,
+		images.artilleryGun,
+		this.x,
+		this.y, //+ (this.position === 'top' ? -8 : 8),
+		this.angle,
+		0.15,
+		0.5
 	);
 }

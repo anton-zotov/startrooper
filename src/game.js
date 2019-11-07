@@ -7,6 +7,7 @@ import { drawFps, drawGUI } from './gui';
 import { loadAssets } from './assets';
 import { drawBackground } from './background';
 import { spawnWave, waveSpawner } from './agents/spawn';
+import { shortRangeBullet } from './weapons/weapons';
 
 let spawner;
 
@@ -31,7 +32,7 @@ export async function start(canvas) {
 
 	spawner = waveSpawner(game);
 	gameObjects.push(player, shield);
-	// gameObjects.push(dumbGuard());
+	// gameObjects.push(shortRangeBullet({ x: 0, y: 0, angle: 1 }));
 
 	requestAnimationFrame(t => frame(game, t));
 }
@@ -46,10 +47,15 @@ function frame(game, time, lastTime = null) {
 	game.mouseMovement = mouseMovement;
 	let enemyCount = 0;
 
-	for (let go of game.gameObjects) {
+	for (let go of game.gameObjects.filter(go => go.type !== gameObjectType.agent)) {
 		go.draw(game.canvasBundle);
 		go.update(time, dt, game);
 		if (go.type === gameObjectType.agent && go.team === 2) enemyCount++;
+	}
+	for (let go of game.gameObjects.filter(go => go.type === gameObjectType.agent)) {
+		go.draw(game.canvasBundle);
+		go.update(time, dt, game);
+		if (go.team === 2) enemyCount++;
 	}
 	game.gameObjects = game.gameObjects.filter(go => !go[deadSymbol]);
 	if (!enemyCount) spawner.nextWave();
