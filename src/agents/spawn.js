@@ -23,7 +23,7 @@ export function waveSpawner(game, canvas) {
 			setTimeout(() => {
 				betweenWavesPause = false;
 				waveNumber++;
-				this.spawnArtillery();
+				this.spawnWawyMobs();
 			}, 1000);
 		},
 		getWaveNumber: () => waveNumber,

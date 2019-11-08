@@ -2,6 +2,7 @@ import { clearCanvas, createCanvas } from "../canvas";
 import { deadSymbol, gameObjectType } from "../constants";
 import { centeredFire } from "../weapons/fire";
 import { reduceHpOnHit } from "../weapons/onHit";
+import { images } from "../assets";
 
 export function wavyMob(game) {
 	let { width: canvasWidth, height: canvasHeight } = game.canvasBundle.canvas;
@@ -30,7 +31,7 @@ export function wavyMob(game) {
 }
 
 export function updateWavyMob(time, dt, game) {
-	let xSpeed = -550;
+	let xSpeed = -250;
 	let dx = dt * xSpeed;
 	this.x += dx;
 	this.y = this.canvasHeight * 0.4 * (1.2 + Math.sin((time - this.created) * 0.0015));
@@ -44,16 +45,9 @@ export function updateWavyMob(time, dt, game) {
 }
 
 export function drawWavyMob({ ctx }) {
-	clearCanvas(this.canvasBundle);
-	this.canvasBundle.ctx.fillStyle = '#F000F0';
-	this.canvasBundle.ctx.fillRect(
-		-this.width / 2,
-		-this.height / 2,
-		this.width,
-		this.height);
 	ctx.drawImage(
-		this.canvasBundle.canvas,
-		this.x - this.canvasBundle.canvas.width / 2,
-		this.y - this.canvasBundle.canvas.height / 2,
+		images.enemy1,
+		this.x - images.enemy1.width / 2,
+		this.y - images.enemy1.height / 2,
 	);
 }

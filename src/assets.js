@@ -1,13 +1,15 @@
-import shipImage from './assets/ship1.png';
+import ship1Image from './assets/ship.png';
+import enemy1Image from './assets/enemy1.png';
 import shieldImage from './assets/shield.png';
 import artilleryBodyImage from './assets/artillery-body.png';
 import artilleryGunImage from './assets/artillery-gun.png';
 
 export const images = {
-	playerShip: shipImage,
+	playerShip: ship1Image,
 	shield: shieldImage,
 	artilleryBody: artilleryBodyImage,
 	artilleryGun: artilleryGunImage,
+	enemy1: enemy1Image,
 }
 
 export function loadAssets() {
