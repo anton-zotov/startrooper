@@ -25,7 +25,7 @@ export function wavyMob(game) {
 		hp: 5,
 		canvasWidth,
 		canvasHeight,
-		created: game.currentTime,
+		timeLived: 0,
 		type: gameObjectType.agent,
 	};
 }
@@ -34,8 +34,9 @@ export function updateWavyMob(time, dt, game) {
 	let xSpeed = -250;
 	let dx = dt * xSpeed;
 	this.x += dx;
-	this.y = this.canvasHeight * 0.4 * (1.2 + Math.sin((time - this.created) * 0.0015));
+	this.y = this.canvasHeight * 0.4 * (1.2 + Math.sin(this.timeLived * 2));
 	this.stepTimeLeft -= dt;
+	this.timeLived += dt;
 	if (this.stepTimeLeft <= 0) {
 		this.stepTimeLeft = this.stepTime;
 		this.step = (this.step + 1) % 2;

@@ -17,14 +17,41 @@ export function fillCanvas({ canvas, ctx }, color = '#000') {
 	ctx.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width * 2, canvas.height * 2);
 }
 
-export function requestPointerLock({ canvas }) {
-	canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
-	canvas.requestPointerLock();
-}
-
 export function drawRotated({ canvas, ctx }, image, x, y, angle, cx = 0.5, cy = 0.5) {
 	ctx.setTransform(1, 0, 0, 1, x, y);
 	ctx.rotate(angle);
 	ctx.drawImage(image, -image.width * cx, -image.height * cy);
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+export function requestPointerLock(canvas) {
+	canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
+	canvas.requestPointerLock();
+}
+
+export function addPointerLockEventListeners(canvas, onLock, onUnlock) {
+	function lockChanged() {
+		if (document.pointerLockElement === canvas ||
+			document.mozPointerLockElement === canvas) {
+			console.log('The pointer lock status is now locked');
+			onLock();
+		} else {
+			console.log('The pointer lock status is now unlocked');
+			onUnlock();
+		}
+	}
+
+	document.addEventListener('pointerlockchange', lockChanged, false);
+	document.addEventListener('mozpointerlockchange', lockChanged, false);
+}
+
+export function drawText(lines, ctx, { x, y, lineHeight = 20, color = 'white', fontSize = 20 }) {
+	if (!Array.isArray(lines)) lines = [lines];
+	ctx.textAlign = "center";
+	ctx.fillStyle = color;
+	ctx.font = `${fontSize}px Open Sans`;
+	for (let line of lines) {
+		ctx.fillText(line, x, y);
+		y += lineHeight;
+	}
 }
