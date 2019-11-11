@@ -77,6 +77,7 @@ function update(game, time, dt) {
 		go.update(time, dt, game);
 		if (go.team === 2) enemyCount++;
 	}
+	game.spawner.update(dt);
 	game.gameObjects = game.gameObjects.filter(go => !go[deadSymbol]);
 	if (!enemyCount) game.spawner.nextWave();
 	calcFps(game, dt);
