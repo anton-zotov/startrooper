@@ -20,6 +20,7 @@ export async function start(canvas) {
 		canvasBundle,
 		gameObjects,
 		getInputs: initInputs(window, canvas),
+		scoreTimer: 0,
 	}
 	let [player, shield] = createPlayer();
 	game.player = player;
@@ -69,18 +70,24 @@ function update(game, time, dt) {
 	game.mouseMovement = mouseMovement;
 	let enemyCount = 0;
 
-	for (let go of game.gameObjects.filter(go => go.type !== gameObjectType.agent)) {
+	for (let go of game.gameObjects) {
 		go.update(time, dt, game);
 		if (go.type === gameObjectType.agent && go.team === 2) enemyCount++;
-	}
-	for (let go of game.gameObjects.filter(go => go.type === gameObjectType.agent)) {
-		go.update(time, dt, game);
-		if (go.team === 2) enemyCount++;
 	}
 	game.spawner.update(dt);
 	game.gameObjects = game.gameObjects.filter(go => !go[deadSymbol]);
 	if (!enemyCount) game.spawner.nextWave();
 	calcFps(game, dt);
+	addScore(game, dt);
+}
+
+function addScore(game, dt) {
+	if (game.player[deadSymbol]) return;
+	game.scoreTimer += dt;
+	if (game.scoreTimer >= 1) {
+		game.scoreTimer -= 1;
+		game.player.score += 10;
+	}
 }
 
 function calcFps(game, dt) {

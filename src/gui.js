@@ -15,6 +15,10 @@ export function drawShield({ ctx, canvas }, player) {
 	drawText(`Shield: ${percent}%`, ctx, { x: canvas.width - 100, y: canvas.height - 30 });
 }
 
+export function drawScore({ ctx, canvas }, player) {
+	drawText(`Score: ${player.score || 0}`, ctx, {x: canvas.width / 2, y: canvas.height - 55 });
+}
+
 export function drawWaveNumber({ ctx, canvas }, wave) {
 	drawText(`Wave: ${wave}`, ctx, { x: canvas.width / 2, y: canvas.height - 30 });
 }
@@ -23,6 +27,7 @@ export function drawGUI(canvasBundle, { dt, player, wave }) {
 	drawFps(canvasBundle, dt);
 	drawHealth(canvasBundle, player);
 	drawShield(canvasBundle, player);
+	drawScore(canvasBundle, player);
 	drawWaveNumber(canvasBundle, wave);
 }
 

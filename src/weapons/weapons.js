@@ -15,6 +15,7 @@ export function shortRangeBullet(agent) {
 		canvasBundle: createCanvas(20, 20, agent.angle),
 		liveTimeLeft: 3,
 		team: agent.team,
+		owner: agent,
 		damage: 25,
 		type: gameObjectType.bullet,
 	};

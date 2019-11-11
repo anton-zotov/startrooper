@@ -6,11 +6,11 @@ export function waveSpawner(game, canvas) {
 	let betweenWavesPause = false;
 	let mobs = [];
 	let pause = 0;
+	let id = 0;
 
 	const spawn = (...args) => spawnWave(game, ...args);
 	return {
 		nextWave: function() {
-			console.log('mobs', mobs)
 			if (mobs.length) return;
 			betweenWavesPause = true;
 			waveNumber++;
@@ -25,7 +25,7 @@ export function waveSpawner(game, canvas) {
 				if (typeof next === 'number') {
 					pause = next;
 				} else {
-					game.gameObjects.push(next(game, { id: 0 }));
+					game.gameObjects.push(next(game, { id }));
 				}
 			}
 		}
@@ -35,7 +35,7 @@ export function waveSpawner(game, canvas) {
 function getMobs(waveNumber) {
 	let artilleryCount = Math.min(10, Math.floor(waveNumber / 2));
 	let wawyCount = Math.min(10, 1 + waveNumber / 2);
-	let mobs = [];
+	let mobs = [3];
 	while (artilleryCount > 0 || wawyCount > 0) {
 		if (artilleryCount-- > 0) mobs.push(artillery);
 		if (wawyCount-- > 0) mobs.push(wavyMob);

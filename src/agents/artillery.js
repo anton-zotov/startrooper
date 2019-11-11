@@ -5,8 +5,10 @@ import { reduceHpOnHit } from "../weapons/onHit";
 import { vectorAngle } from "../utils/geometry";
 import { images } from "../assets";
 
-export function artillery(game, { id = 0 } = {}) {
-	let position = (id % 2) ? 'bottom' : 'top';
+let id = 0;
+
+export function artillery(game) {
+	let position = (id++ % 2) ? 'bottom' : 'top';
 	let { width: canvasWidth, height: canvasHeight } = game.canvasBundle.canvas;
 	return {
 		update: updateArtillery,
