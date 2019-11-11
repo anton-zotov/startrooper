@@ -67,7 +67,7 @@ export function drawArtillery(canvasBundle) {
 		canvasBundle,
 		images.artilleryGun,
 		this.x,
-		this.y, //+ (this.position === 'top' ? -8 : 8),
+		this.y,
 		this.angle,
 		0.15,
 		0.5

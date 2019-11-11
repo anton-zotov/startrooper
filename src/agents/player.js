@@ -8,7 +8,6 @@ import { images } from "../assets";
 import { shield } from "./shield";
 import { inBoundaries } from "../utils/geometry";
 
-
 export function player() {
 	let playerObject = {
 		update: updatePlayer,

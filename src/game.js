@@ -1,13 +1,11 @@
 import { requestPointerLock, addPointerLockEventListeners } from './canvas';
 import { initInputs } from './inputs';
 import { player as createPlayer } from './agents/player';
-import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol, gameObjectType } from './constants';
 import { drawFps, drawGUI, drawPauseMessage, drawAim, drawGameOverMessage } from './gui';
 import { loadAssets } from './assets';
 import { drawBackground } from './background';
-import { spawnWave, waveSpawner } from './agents/spawn';
-import { shortRangeBullet } from './weapons/weapons';
+import { waveSpawner } from './agents/spawn';
 
 let game;
 
@@ -35,13 +33,11 @@ function createNewGame(canvas) {
 		gameObjects,
 		getInputs: initInputs(window, canvas),
 		scoreTimer: 0,
-	}
-	let [player, shield] = createPlayer();
-	game.player = player;
-	game.shield = shield;
+	};
+	[game.player, game.shield] = createPlayer();
+	gameObjects.push(game.player, game.shield);
 
 	game.spawner = waveSpawner(game);
-	gameObjects.push(player, shield);
 }
 
 function frame(time, lastTime = time) {
@@ -118,7 +114,7 @@ export function resume() {
 	requestAnimationFrame(frame);
 }
 
-export function onMouseDown() {
+function onMouseDown() {
 	if (game.player[deadSymbol]) {
 		createNewGame(game.canvasBundle.canvas);
 		game.isRunning = true;

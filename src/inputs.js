@@ -44,5 +44,4 @@ function onKeyDown(key, keysPressed) {
 
 function onKeyUp(key, keysPressed) {
 	keysPressed.delete(key.toLowerCase());
-	// keys_not_released.delete(key.toLowerCase());
 }
