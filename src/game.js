@@ -3,7 +3,7 @@ import { initInputs } from './inputs';
 import { player as createPlayer } from './agents/player';
 import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol, gameObjectType } from './constants';
-import { drawFps, drawGUI, drawPauseMessage, drawAim } from './gui';
+import { drawFps, drawGUI, drawPauseMessage, drawAim, drawGameOverMessage } from './gui';
 import { loadAssets } from './assets';
 import { drawBackground } from './background';
 import { spawnWave, waveSpawner } from './agents/spawn';
@@ -61,7 +61,8 @@ function draw(game) {
 	});
 	drawFps(game.canvasBundle, game.fps);
 	drawAim(game.canvasBundle, game.mouseMovement);
-	if (!game.isRunning) drawPauseMessage(game.canvasBundle);
+	if (game.player[deadSymbol]) drawGameOverMessage(game.canvasBundle, game.player.score);
+	else if (!game.isRunning) drawPauseMessage(game.canvasBundle);
 }
 
 function update(game, time, dt) {

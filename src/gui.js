@@ -16,7 +16,7 @@ export function drawShield({ ctx, canvas }, player) {
 }
 
 export function drawScore({ ctx, canvas }, player) {
-	drawText(`Score: ${player.score || 0}`, ctx, {x: canvas.width / 2, y: canvas.height - 55 });
+	drawText(`Score: ${player.score || 0}`, ctx, { x: canvas.width / 2, y: canvas.height - 55 });
 }
 
 export function drawWaveNumber({ ctx, canvas }, wave) {
@@ -44,4 +44,10 @@ export function drawAim({ ctx, canvas }, pos) {
 	let { x, y } = pos;
 	drawCircle(ctx, { x, y, r: 14, color: 'white' });
 	drawCircle(ctx, { x, y, r: 1, color: 'white' });
+}
+
+export function drawGameOverMessage({ ctx, canvas }, score) {
+	drawText(['Game over', `You score: ${score}`], ctx,
+		{ x: canvas.width / 2, y: canvas.height * 0.5 - 70, fontSize: 40 });
+	drawText('Click to play again', ctx, { x: canvas.width / 2, y: canvas.height * 0.5 + 10 });
 }

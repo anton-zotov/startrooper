@@ -43,14 +43,14 @@ export function addPointerLockEventListeners(canvas, onLock, onUnlock) {
 	document.addEventListener('mozpointerlockchange', lockChanged, false);
 }
 
-export function drawText(lines, ctx, { x, y, lineHeight = 20, color = 'white', fontSize = 20 }) {
+export function drawText(lines, ctx, { x, y, color = 'white', fontSize = 20 }) {
 	if (!Array.isArray(lines)) lines = [lines];
 	ctx.textAlign = "center";
 	ctx.fillStyle = color;
 	ctx.font = `${fontSize}px Open Sans`;
 	for (let line of lines) {
 		ctx.fillText(line, x, y);
-		y += lineHeight;
+		y += fontSize;
 	}
 }
 

@@ -13,7 +13,7 @@ export function reduceHpOnHit(ammo) {
 }
 
 function onDie(obj, ammo) {
-	if (ammo.owner) {
+	if (ammo.owner && !ammo.owner[deadSymbol]) {
 		ammo.owner.score = (ammo.owner.score || 0) + (obj.worthPoints || 100);
 	}
 	if (obj.onDie) obj.onDie();
