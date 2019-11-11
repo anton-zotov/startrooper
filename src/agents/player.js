@@ -27,11 +27,12 @@ export function player() {
 		canvasBundle: createCanvas(100, 100),
 		interactsWithAmmo: true,
 		team: 1,
-		maxHp: 10,
-		hp: 10,
+		maxHp: 1000,
+		hp: 1000,
 		shieldActive: false,
 	};
 	let shieldObject = shield(playerObject);
+	playerObject.shield = shieldObject;
 	return [playerObject, shieldObject];
 }
 

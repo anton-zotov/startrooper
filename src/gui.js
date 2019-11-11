@@ -10,9 +10,15 @@ export function drawHealth({ ctx, canvas }, player) {
 	drawText(`Health: ${percent}%`, ctx, { x: 70, y: canvas.height - 30 });
 }
 
+export function drawShield({ ctx, canvas }, player) {
+	let percent = Math.round(player.shield.hp / player.shield.maxHp * 100);
+	drawText(`Shield: ${percent}%`, ctx, { x: canvas.width - 100, y: canvas.height - 30 });
+}
+
 export function drawGUI(canvasBundle, { dt, player, wave }) {
 	drawFps(canvasBundle, dt);
 	drawHealth(canvasBundle, player);
+	drawShield(canvasBundle, player);
 }
 
 export function drawPauseMessage({ ctx, canvas }) {

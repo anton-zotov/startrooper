@@ -33,10 +33,8 @@ export function addPointerLockEventListeners(canvas, onLock, onUnlock) {
 	function lockChanged() {
 		if (document.pointerLockElement === canvas ||
 			document.mozPointerLockElement === canvas) {
-			console.log('The pointer lock status is now locked');
 			onLock();
 		} else {
-			console.log('The pointer lock status is now unlocked');
 			onUnlock();
 		}
 	}

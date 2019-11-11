@@ -2,12 +2,17 @@ import { deadSymbol } from "../constants";
 
 export function dieOnHit() {
 	this.hp = 0;
-	this[deadSymbol] = true;
+	onDie(this);
 }
 
 export function reduceHpOnHit(ammo) {
-	this.hp -= ammo.damage;
+	this.hp = Math.max(0, this.hp - ammo.damage);
 	if (this.hp <= 0) {
-		this[deadSymbol] = true;
+		onDie(this);
 	}
+}
+
+function onDie(obj) {
+	if (obj.onDie) obj.onDie();
+	else obj[deadSymbol] = true;
 }
