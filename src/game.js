@@ -9,14 +9,28 @@ import { drawBackground } from './background';
 import { spawnWave, waveSpawner } from './agents/spawn';
 import { shortRangeBullet } from './weapons/weapons';
 
+let game;
+
 export async function start(canvas) {
 	let ctx = canvas.getContext('2d');
 	let canvasBundle = { canvas, ctx };
 
 	await loadAssets();
 
+	createNewGame(canvas);
+	draw();
+
+	addPointerLockEventListeners(canvas, resume, pause);
+	canvas.addEventListener('click', () => requestPointerLock(canvas));
+	canvas.addEventListener('mousedown', onMouseDown);
+}
+
+function createNewGame(canvas) {
+	let ctx = canvas.getContext('2d');
+	let canvasBundle = { canvas, ctx };
+
 	let gameObjects = [];
-	let game = {
+	game = {
 		canvasBundle,
 		gameObjects,
 		getInputs: initInputs(window, canvas),
@@ -28,26 +42,19 @@ export async function start(canvas) {
 
 	game.spawner = waveSpawner(game);
 	gameObjects.push(player, shield);
-	// gameObjects.push(shortRangeBullet({ x: 0, y: 0, angle: 1 }));
-
-	addPointerLockEventListeners(canvas, resume.bind(null, game), pause.bind(null, game));
-	canvas.onclick = function() {
-		requestPointerLock(canvas);
-	}
-	draw(game);
 }
 
-function frame(game, time, lastTime = time) {
+function frame(time, lastTime = time) {
 	if (!game.isRunning) return;
 	game.currentTime = time;
 	let dt = 0;
 	if (lastTime) dt = (time - lastTime) / 1000;
-	update(game, time, dt);
-	draw(game);
-	requestAnimationFrame(t => frame(game, t, time));
+	update(time, dt);
+	draw();
+	requestAnimationFrame(t => frame(t, time));
 }
 
-function draw(game) {
+function draw() {
 	drawBackground(game.canvasBundle);
 
 	for (let go of game.gameObjects) {
@@ -65,7 +72,7 @@ function draw(game) {
 	else if (!game.isRunning) drawPauseMessage(game.canvasBundle);
 }
 
-function update(game, time, dt) {
+function update(time, dt) {
 	let { keysPressed, mouseMovement } = game.getInputs();
 	game.keysPressed = keysPressed;
 	game.mouseMovement = mouseMovement;
@@ -78,11 +85,11 @@ function update(game, time, dt) {
 	game.spawner.update(dt);
 	game.gameObjects = game.gameObjects.filter(go => !go[deadSymbol]);
 	if (!enemyCount) game.spawner.nextWave();
-	calcFps(game, dt);
-	addScore(game, dt);
+	calcFps(dt);
+	addScore(dt);
 }
 
-function addScore(game, dt) {
+function addScore(dt) {
 	if (game.player[deadSymbol]) return;
 	game.scoreTimer += dt;
 	if (game.scoreTimer >= 1) {
@@ -91,7 +98,7 @@ function addScore(game, dt) {
 	}
 }
 
-function calcFps(game, dt) {
+function calcFps(dt) {
 	const historyMaxSize = 10;
 	if (!game.dtHistory) game.dtHistory = [];
 	game.dtHistory.push(dt);
@@ -100,13 +107,20 @@ function calcFps(game, dt) {
 	game.fps = avDt ? Math.round(1 / avDt) : 0;
 }
 
-export function pause(game) {
+export function pause() {
 	game.isRunning = false;
-	draw(game);
+	draw();
 }
 
-export function resume(game) {
+export function resume() {
 	if (game.isRunning) return;
 	game.isRunning = true;
-	requestAnimationFrame(t => frame(game, t));
+	requestAnimationFrame(frame);
+}
+
+export function onMouseDown() {
+	if (game.player[deadSymbol]) {
+		createNewGame(game.canvasBundle.canvas);
+		game.isRunning = true;
+	}
 }

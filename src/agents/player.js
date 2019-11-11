@@ -28,7 +28,7 @@ export function player() {
 		interactsWithAmmo: true,
 		team: 1,
 		maxHp: 100,
-		hp: 10,
+		hp: 100,
 		shieldActive: false,
 		score: 0,
 	};
