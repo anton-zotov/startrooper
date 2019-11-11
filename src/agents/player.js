@@ -6,6 +6,7 @@ import { gravity } from "../constants";
 import { clearCanvas } from "../canvas";
 import { images } from "../assets";
 import { shield } from "./shield";
+import { inBoundaries } from "../utils/geometry";
 
 
 export function player() {
@@ -44,9 +45,11 @@ export function updatePlayer(time, dt, game) {
 
 	let vx = controls.forward * dt * speed;
 	this.x += vx;
+	this.x = inBoundaries(this.x, this.width / 2, game.canvasBundle.canvas.width - this.width / 2);
 	
 	let vy = controls.upward * dt * speed;
 	this.y += vy;
+	this.y = inBoundaries(this.y, this.height / 2, game.canvasBundle.canvas.height - this.height / 2);
 
 	// let ay = gravity * dt;
 	// if (controls.upward === 1) ay += accelerationBottom * dt;
@@ -56,9 +59,7 @@ export function updatePlayer(time, dt, game) {
 	// if (this.vy < -yMaxSpeed) this.vy = -yMaxSpeed;
 	// this.y += this.vy;
 
-	if (controls.dAngle) {
-		this.angle += controls.dAngle;
-	}
+	this.angle = controls.angle;
 	if (controls.fire) {
 		this.fire(time, game.gameObjects);
 	}
@@ -83,16 +84,15 @@ export function drawPlayer({ ctx }) {
 		this.x - images.playerShip.width / 2,
 		this.y - images.playerShip.height / 2,
 	);
-	drawAim.call(this, { ctx });
 }
 
-function drawAim({ ctx }) {
-	let aimDistance = 120;
-	let aimRadius = 10;
-	let aimX = this.x + this.weaponX + aimDistance * Math.cos(this.angle);
-	let aimY = this.y + aimDistance * Math.sin(this.angle);
-	ctx.strokeStyle = '#00F000';
-	ctx.beginPath();
-	ctx.arc(aimX, aimY, aimRadius, 0, Math.PI * 2);
-	ctx.stroke();
-}
+// function drawAim({ ctx }) {
+// 	let aimDistance = 120;
+// 	let aimRadius = 10;
+// 	let aimX = this.x + this.weaponX + aimDistance * Math.cos(this.angle);
+// 	let aimY = this.y + aimDistance * Math.sin(this.angle);
+// 	ctx.strokeStyle = '#00F000';
+// 	ctx.beginPath();
+// 	ctx.arc(aimX, aimY, aimRadius, 0, Math.PI * 2);
+// 	ctx.stroke();
+// }

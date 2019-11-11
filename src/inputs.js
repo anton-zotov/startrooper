@@ -1,23 +1,23 @@
-export function initInputs(window, canvas) {
-	const getClearMouseMovement = () => ({ dx: 0, dy: 0 });
+import { inBoundaries } from "./utils/geometry";
 
+export function initInputs(window, canvas) {
 	let keysPressed = new Set();
-	let mouseMovement = getClearMouseMovement();;
+	let mouseMovement = { x: 100, y: 100 };
 
 	window.onkeydown = e => onKeyDown(e.key, keysPressed);
 	window.onkeyup = e => onKeyUp(e.key, keysPressed);
 	window.onmousemove = e => {
-		mouseMovement.dx += e.movementX;
-		mouseMovement.dy += e.movementY;
+		mouseMovement.x += e.movementX;
+		mouseMovement.y += e.movementY;
+		mouseMovement.x = inBoundaries(mouseMovement.x, 0, canvas.width);
+		mouseMovement.y = inBoundaries(mouseMovement.y, 0, canvas.height);
 	};
 	canvas.onmousedown = e => onKeyDown(getMouseKey(e), keysPressed);
 	canvas.onmouseup = e => onKeyUp(getMouseKey(e), keysPressed);
 	canvas.oncontextmenu = () => false;
 
 	return () => {
-		let mm = mouseMovement;
-		mouseMovement = getClearMouseMovement();
-		return { keysPressed, mouseMovement: mm };
+		return { keysPressed, mouseMovement };
 	};
 }
 

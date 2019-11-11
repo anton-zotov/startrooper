@@ -1,4 +1,4 @@
-import { drawText } from "./canvas";
+import { drawText, drawCircle } from "./canvas";
 
 export function drawFps({ ctx }, fps) {
 	if (fps === undefined) return;
@@ -21,4 +21,11 @@ export function drawPauseMessage({ ctx, canvas }) {
 		'left mouse button to shoot',
 		'right mouse button to activate shield'];
 	drawText(pauseMessage, ctx, { x: canvas.width / 2, y: canvas.height / 2 - 40 });
+}
+
+export function drawAim({ ctx, canvas }, pos) {
+	if (!pos) return;
+	let { x, y } = pos;
+	drawCircle(ctx, { x, y, r: 14, color: 'white' });
+	drawCircle(ctx, { x, y, r: 1, color: 'white' });
 }

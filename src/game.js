@@ -3,7 +3,7 @@ import { initInputs } from './inputs';
 import { player as createPlayer } from './agents/player';
 import { dumbGuard } from './agents/dumbGuard';
 import { deadSymbol, gameObjectType } from './constants';
-import { drawFps, drawGUI, drawPauseMessage } from './gui';
+import { drawFps, drawGUI, drawPauseMessage, drawAim } from './gui';
 import { loadAssets } from './assets';
 import { drawBackground } from './background';
 import { spawnWave, waveSpawner } from './agents/spawn';
@@ -41,8 +41,8 @@ function frame(game, time, lastTime = time) {
 	game.currentTime = time;
 	let dt = 0;
 	if (lastTime) dt = (time - lastTime) / 1000;
-	draw(game);
 	update(game, time, dt);
+	draw(game);
 	requestAnimationFrame(t => frame(game, t, time));
 }
 
@@ -59,6 +59,7 @@ function draw(game) {
 		wave: game.spawner.getWaveNumber()
 	});
 	drawFps(game.canvasBundle, game.fps);
+	drawAim(game.canvasBundle, game.mouseMovement);
 	if (!game.isRunning) drawPauseMessage(game.canvasBundle);
 }
 
