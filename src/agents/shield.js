@@ -1,6 +1,6 @@
 import { images } from "../assets";
 import { reduceHpOnHit } from "../weapons/onHit";
-import { createCanvas } from "../canvas";
+import { createCanvas, drawImage } from "../canvas";
 
 const recoveryPause = 1;
 const recoverySpeed = 25;
@@ -24,9 +24,10 @@ export function shield(agent) {
 	};
 }
 
-function drawShield({ ctx }) {
+function drawShield(canvasBundle) {
 	if (!this.host.shieldActive || this.isDepleted) return;
-	ctx.drawImage(
+	drawImage(
+		canvasBundle,
 		images.shield,
 		this.x + 70 - images.shield.width / 2,
 		this.y - images.shield.height / 2,

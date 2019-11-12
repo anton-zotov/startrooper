@@ -1,4 +1,4 @@
-import { clearCanvas, createCanvas } from "../canvas";
+import { clearCanvas, createCanvas, drawImage } from "../canvas";
 import { deadSymbol, gameObjectType } from "../constants";
 import { centeredFire } from "../weapons/fire";
 import { reduceHpOnHit } from "../weapons/onHit";
@@ -45,8 +45,9 @@ export function updateWavyMob(time, dt, game) {
 	this.fire(time, game.gameObjects);
 }
 
-export function drawWavyMob({ ctx }) {
-	ctx.drawImage(
+export function drawWavyMob(createCanvas) {
+	drawImage(
+		createCanvas,
 		images.enemy1,
 		this.x - images.enemy1.width / 2,
 		this.y - images.enemy1.height / 2,

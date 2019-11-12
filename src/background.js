@@ -1,51 +1,48 @@
-import { fillCanvas, createCanvas } from "./canvas";
+import { fillCanvas, createCanvas, drawImage } from "./canvas";
 import { randomElement } from "./utils/array";
+import { starDensity } from "./constants";
 
-const starDensity = 0.001;
-
-let starCount;
 let initialized = false;
-let stars = [];
 let starCBs = [];
+let panes = [];
 
-function init(canvasBundle) {
+function createPane(x, w, h, speed) {
+	return {
+		x,
+		speed,
+		canvasBundle: createCanvas(w, h, 0, 0, 0, 1)
+	}
+}
+
+function init({ canvas, ctx }) {
 	for (let i = 0; i < 20; i++) {
 		let starCB = createCanvas(10, 10);
-		drawStar(starCB, 1 + i % 3);
+		createStar(starCB, 1 + i % 3);
 		starCBs.push(starCB);
 	}
 
-	starCount = Math.floor(canvasBundle.canvas.width * canvasBundle.canvas.height * starDensity);
+	for (let i = 1; i <= 5; i++) {
+		panes.push(createPane(0, canvas.width, canvas.height, i));
+		panes.push(createPane(canvas.width, canvas.width, canvas.height, i));
+	}
+
+	let starCount = Math.floor(canvas.width * canvas.height * starDensity);
 	for (let i = 0; i < starCount; i++) {
-		stars.push(star(canvasBundle));
+		for (let pane of panes) {
+			drawStar(pane.canvasBundle);
+		}
 	}
 	initialized = true;
 }
 
-function star(canvasBundle) {
+function drawStar({ canvas, ctx }) {
 	let starCB = randomElement(starCBs);
-	let x = Math.random() * canvasBundle.canvas.width;
-	let y = Math.random() * canvasBundle.canvas.height;
-	let speed = Math.random() * 8;
-
-	function draw() {
-		canvasBundle.ctx.drawImage(starCB.canvas, Math.floor(x), Math.floor(y));
-	}
-	function update() {
-		x -= speed;
-		if (x < 30) {
-			x = canvasBundle.canvas.width + 30;
-			starCB = randomElement(starCBs);
-		}
-	}
-
-	return {
-		draw,
-		update,
-	};
+	let x = Math.random() * canvas.width;
+	let y = Math.random() * canvas.height;
+	drawImage({ ctx }, starCB.canvas, x, y);
 }
 
-function drawStar({ ctx }, size) {
+function createStar({ ctx }, size) {
 	let opacity = 0.7 * Math.random();
 	ctx.beginPath();
 	for (let i = 0; i < 5; i++) {
@@ -66,8 +63,9 @@ function drawStar({ ctx }, size) {
 export function drawBackground(canvasBundle) {
 	if (!initialized) init(canvasBundle);
 	fillCanvas(canvasBundle);
-	for (let star of stars) {
-		star.draw();
-		star.update();
+	for (let pane of panes) {
+		canvasBundle.ctx.drawImage(pane.canvasBundle.canvas, pane.x, 0);
+		pane.x -= pane.speed;
+		if (pane.x + pane.canvasBundle.canvas.width < 0) pane.x += pane.canvasBundle.canvas.width * 2;
 	}
 }

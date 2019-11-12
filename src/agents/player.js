@@ -1,7 +1,7 @@
 import { getHumanControls } from "../controls";
 import { centeredFire } from "../weapons/fire";
 import { dieOnHit, reduceHpOnHit } from "../weapons/onHit";
-import { createCanvas } from "../canvas";
+import { createCanvas, drawImage } from "../canvas";
 import { gravity } from "../constants";
 import { clearCanvas } from "../canvas";
 import { images } from "../assets";
@@ -52,14 +52,6 @@ export function updatePlayer(time, dt, game) {
 	this.y += vy;
 	this.y = inBoundaries(this.y, this.height / 2, game.canvasBundle.canvas.height - this.height / 2);
 
-	// let ay = gravity * dt;
-	// if (controls.upward === 1) ay += accelerationBottom * dt;
-	// else if (controls.upward === -1) ay += accelerationTop * dt;
-	// this.vy += ay;
-	// if (this.vy > yMaxSpeed) this.vy = yMaxSpeed;
-	// if (this.vy < -yMaxSpeed) this.vy = -yMaxSpeed;
-	// this.y += this.vy;
-
 	this.angle = controls.angle;
 	if (controls.fire) {
 		this.fire(time, game.gameObjects);
@@ -67,20 +59,9 @@ export function updatePlayer(time, dt, game) {
 	this.shieldActive = controls.secondary;
 }
 
-export function drawPlayer({ ctx }) {
-	// clearCanvas(this.canvasBundle);
-	// this.canvasBundle.ctx.fillStyle = "#" + Math.round((1 - 0) * 255).toString(16).padEnd('0', 2) + 'F000';
-	// this.canvasBundle.ctx.fillRect(
-	// 	-this.width / 2,
-	// 	-this.height / 2,
-	// 	this.width,
-	// 	this.height);
-	// ctx.drawImage(
-	// 	this.canvasBundle.canvas, 
-	// 	this.x - this.canvasBundle.canvas.width / 2, 
-	// 	this.y - this.canvasBundle.canvas.height / 2, 
-	// // );
-	ctx.drawImage(
+export function drawPlayer(canvasBundle) {
+	drawImage(
+		canvasBundle,
 		images.playerShip,
 		this.x - images.playerShip.width / 2,
 		this.y - images.playerShip.height / 2,

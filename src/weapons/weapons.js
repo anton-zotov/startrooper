@@ -1,9 +1,9 @@
-import { clearCanvas, createCanvas } from "../canvas";
+import { clearCanvas, createCanvas, drawImage } from "../canvas";
 import { deadSymbol, gameObjectType } from "../constants";
 import { dieOnHit } from "./onHit";
 
 export function shortRangeBullet(agent) {
-	return {
+	let bullet = {
 		update: updateBullet,
 		draw: drawBullet,
 		onHit: dieOnHit,
@@ -19,6 +19,15 @@ export function shortRangeBullet(agent) {
 		damage: 25,
 		type: gameObjectType.bullet,
 	};
+
+	bullet.canvasBundle.ctx.fillStyle = '#00F0F0';
+	bullet.canvasBundle.ctx.fillRect(
+		-bullet.width / 2,
+		-bullet.height / 2,
+		bullet.width,
+		bullet.height);
+
+	return bullet;
 }
 
 export function updateBullet(time, dt, game) {
@@ -32,18 +41,14 @@ export function updateBullet(time, dt, game) {
 	checkHit(this, game);
 }
 
-export function drawBullet({ ctx }) {
-	clearCanvas(this.canvasBundle);
-	this.canvasBundle.ctx.fillStyle = '#00F0F0';
-	this.canvasBundle.ctx.fillRect(
-		-this.width / 2,
-		-this.height / 2,
-		this.width,
-		this.height);
-	ctx.drawImage(
-		this.canvasBundle.canvas, 
-		this.x - 15, 
-		this.y - 15, 
+export function drawBullet(canvasBundle) {
+	// clearCanvas(this.canvasBundle);
+
+	drawImage(
+		canvasBundle,
+		this.canvasBundle.canvas,
+		this.x - 15,
+		this.y - 15,
 	);
 }
 
